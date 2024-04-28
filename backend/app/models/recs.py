@@ -6,7 +6,7 @@ df_courses = pd.read_json('static/courses.json', orient='index')
 df_courses_add = get_pagse_geekbrains()
 
 df_courses.columns = df_courses.columns.str.lower()
-df_courses['name'] = df_courses['уровень сложности'] + " " + df_courses['name'] + " " + df_courses['подвид']
+df_courses['name'] = df_courses['уровень сложности'] + " " + df_courses['name']
 df_courses = df_courses.drop(['уровень сложности', 'класс', 'тип устройства'], axis=1)
 df_courses.columns = ['title', 'url', 'sphere', 'specialization', 'sub', 'skills']
 df_courses = df_courses[df_courses['sphere'] != 'Профессии для школьников']

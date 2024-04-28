@@ -3,6 +3,7 @@ import {Inter} from "next/font/google";
 import {ReactNode} from "react";
 import Image from "next/image";
 import "./globals.css";
+import Link from "next/link";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -17,7 +18,9 @@ export default function RootLayout({children}: Readonly<{ children: ReactNode; }
     <body className={`${inter.className} grid grid-rows-1fr-100-1fr h-screen text-white`}>
       <header className="flex items-center justify-between h-14 p-4 text-white border-b border-slate-100/10">
         <div>
-          <Image src={'/header-logo.svg'} alt={'Header logo'} width={128} height={64} />
+          <Link href={"/"}>
+            <Image src={'/header-logo.svg'} alt={'Header logo'} width={128} height={64} />
+          </Link>
         </div>
       </header>
 

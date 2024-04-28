@@ -1,18 +1,15 @@
-import {Course, generateRandomData} from "@/services/api/data_process/data_process.api.types";
-import {Table} from "@/components/Table/Table";
-import {ColumnDef, createColumnHelper} from "@tanstack/react-table";
+import {Course, DataProcessResponse} from "@/services/api/data_process/data_process.api.types";
+import React from "react";
+import Table from "@/components/Table/Table";
 
-const data = generateRandomData(10);
+interface Props {
+  data: Course[]
+}
 
-const columnHelper = createColumnHelper<Course>()
-const columns = [
-  columnHelper.accessor('name', {header: 'Name'}),
-  columnHelper.accessor('coverage', {header: 'Coverage'}),
-]
-export function ResultsTable() {
-    return (
-        <div className="w-full">
-            <Table data={data.courses} columns={columns} />
-        </div>
-    )
+export function ResultsTable({data}: Props) {
+  return (
+    <div className="w-full">
+      <Table data={data}/>
+    </div>
+  )
 }

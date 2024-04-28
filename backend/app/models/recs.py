@@ -46,16 +46,11 @@ def get_recommended_courses_pdf(description, skills):
     df2 = cosine_distances_vac(df_courses, 'title', description, 'cosine_dist_title')
 
     result = df1.join(df2.iloc[:, -1])
-    print(1)
-    skills_in_vacalsy = skills_in_text(skills, description)
-    print(2)
+    skills_in_vacancy = skills_in_text(skills, description)
     df_courses['skills_ratio'] = (df_courses['more_text'] + df_courses['skills']).apply(
-        lambda x: skills_in_text(skills_in_vacalsy, x))
+        lambda x: skills_in_text(skills_in_vacancy, x))
     for i in df_courses['skills_ratio'].index:
-        df_courses.loc[i, 'skills_ratio'] = len(df_courses.loc[i, 'skills_ratio']) / len(skills_in_vacalsy)
-    print(df_courses['skills'])
-    print(df_courses['skills_ratio'])
-    print(skills_in_vacalsy)
+        df_courses.loc[i, 'skills_ratio'] = len(df_courses.loc[i, 'skills_ratio']) / len(skills_in_vacancy)
     result['skills_ratio'] = df_courses['skills_ratio']
 
     return result.sort_values(by='cosine_dist_title', ascending=False).query('cosine_dist_title > 0')

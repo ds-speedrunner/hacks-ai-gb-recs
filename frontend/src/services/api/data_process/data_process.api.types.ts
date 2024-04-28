@@ -8,6 +8,7 @@ export interface Course {
   more_text: string
   skills: string
   skills_ratio: number
+  score_avg: number
   title: string
   url: string
 }

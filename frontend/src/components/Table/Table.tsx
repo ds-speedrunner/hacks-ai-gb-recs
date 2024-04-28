@@ -4,17 +4,23 @@ import {getCoreRowModel, useReactTable, flexRender, createColumnHelper} from '@t
 import {TableBody} from "@/components/Table/TableBody";
 import {TableHead} from "@/components/Table/TableHead";
 import {Course} from "@/services/api/data_process/data_process.api.types";
+import {ProgressBarCell} from "@/components/Table/cells/ProgressBarCell";
 
 interface Props {
   data: Course[];
 }
 
+const getProgressBarCell = (cell: any) => {
+  return <ProgressBarCell value={cell.getValue()} />
+}
+
 const columnHelper = createColumnHelper<Course>()
 const columns = [
-  columnHelper.accessor('title', {header: 'Name'}),
-  columnHelper.accessor('skills_ratio', {header: 'Coverage'}),
+  columnHelper.accessor('title', {header: 'Курс'}),
+  columnHelper.accessor('skills_ratio', {header: 'Покрываемость навыков', cell: getProgressBarCell }),
+  columnHelper.accessor('score_avg', {header: 'Соответствие', cell: getProgressBarCell }),
   columnHelper.accessor('url', {
-    header: 'Link',
+    header: 'Ссылка',
     cell: (cell) => <a href={cell.getValue()} target="_blank" rel="noreferrer">{cell.getValue()}</a>,
   }),
 ]

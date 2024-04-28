@@ -3,8 +3,10 @@ from fastapi.middleware.cors import CORSMiddleware
 
 import parsers.pdf as pdf_parser
 import parsers.hh as hh_parser
+import parsers.keywords as skils_parser
 
-from models.recs import get_recommended_courses
+from models.recs import get_recommended_courses, get_recommended_courses_pdf
+
 from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
@@ -26,8 +28,10 @@ app.add_middleware(
 
 
 def get_response(title, description, keywords=None):
-    df = get_recommended_courses(title, description)
-    return df.to_dict(orient='records')
+    df = get_recommended_courses(title, description, keywords)
+    return {
+        'courses': df.to_dict(orient='records')
+    }
 
 
 @app.post('/upload_file')
@@ -36,7 +40,11 @@ async def upload_file(request: Request):
     file = form['file']
     try:
         text = pdf_parser.parse_pdf(file)
-        return get_response('', text)
+        skills = skils_parser.json_parse_skills()
+        df = get_recommended_courses_pdf(text, skills)
+        return {
+            "courses": df.to_dict(orient='records'),
+        }
     except Exception as e:
         return {"error": str(e)}
 
@@ -48,7 +56,14 @@ async def process_data(request: Request):
 
     if text and hh_parser.is_hh_link(text):
         title, description, keywords = hh_parser.parse_hh_vacancy(text)
-        return get_response(title, description, keywords)
+        df = get_recommended_courses(title, description, keywords)
+        return {
+            "courses": df.to_dict(orient='records'),
+        }
 
-    return {"text": text}
+    skills = skils_parser.json_parse_skills()
+    df = get_recommended_courses_pdf(text, skills)
+    return {
+        "courses": df.to_dict(orient='records'),
+    }
 

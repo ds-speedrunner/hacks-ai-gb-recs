@@ -105,6 +105,8 @@ stack-data==0.6.3
 starlette==0.37.2
 terminado==0.18.0
 threadpoolctl==3.4.0
+requests>=2.26.0
+fake_useragent==1.5.1
 tinycss2==1.2.1
 tornado==6.4
 tqdm==4.66.1
@@ -123,4 +125,3 @@ webencodings==0.5.1
 websocket-client==1.7.0
 websockets==12.0
 widgetsnbextension==4.0.9
-requests>=2.26.0

@@ -34,6 +34,7 @@ def get_recommended_courses(title, description, skills):
     for i in df_courses['skills_ratio'].index:
         df_courses.loc[i, 'skills_ratio'] = len(df_courses.loc[i, 'skills_ratio']) / len(skills_in_vacancy)
     result['skills_ratio'] = df_courses['skills_ratio']
+    result['score_avg'] = (df_courses['skills_ratio'] * 6 + result['cosine_dist_title'] * 3 + result['cosine_dist_description'])/10
 
     return result.sort_values(by='skills_ratio', ascending=False).query('cosine_dist_title > 0')
 

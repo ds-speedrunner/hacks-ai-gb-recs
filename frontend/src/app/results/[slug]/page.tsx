@@ -4,7 +4,6 @@ import {notFound} from "next/navigation";
 
 export default async function ResultsPage({params}: { params: { slug: string } }) {
   const result = await dataProcessApiService.getById(params.slug)
-  console.log('result', result)
 
   if (!result) {
     return notFound()

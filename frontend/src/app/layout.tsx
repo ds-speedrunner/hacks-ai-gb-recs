@@ -15,8 +15,8 @@ export const metadata: Metadata = {
 export default function RootLayout({children}: Readonly<{ children: ReactNode; }>) {
   return (
     <html lang="en">
-    <body className={`${inter.className} grid grid-rows-1fr-100-1fr h-screen text-white`}>
-      <header className="flex items-center justify-between h-14 p-4 text-white border-b border-slate-100/10">
+    <body className={`${inter.className} grid grid-rows-1fr-100-1fr text-white min-h-screen`}>
+      <header className="flex items-center justify-between h-14 p-4 text-white border-b border-slate-100/10 sticky top-0">
         <div>
           <Link href={"/"}>
             <Image src={'/header-logo.svg'} alt={'Header logo'} width={128} height={64} />

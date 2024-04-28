@@ -35,7 +35,7 @@ def get_recommended_courses(title, description, skills):
         df_courses.loc[i, 'skills_ratio'] = len(df_courses.loc[i, 'skills_ratio']) / len(skills_in_vacancy)
     result['skills_ratio'] = df_courses['skills_ratio']
 
-    return result.sort_values(by='cosine_dist_title', ascending=False).query('cosine_dist_title > 0')
+    return result.sort_values(by='skills_ratio', ascending=False).query('cosine_dist_title > 0')
 
 
 def get_recommended_courses_pdf(description, skills):
@@ -53,4 +53,4 @@ def get_recommended_courses_pdf(description, skills):
         df_courses.loc[i, 'skills_ratio'] = len(df_courses.loc[i, 'skills_ratio']) / len(skills_in_vacancy)
     result['skills_ratio'] = df_courses['skills_ratio']
 
-    return result.sort_values(by='cosine_dist_title', ascending=False).query('cosine_dist_title > 0')
+    return result.sort_values(by='skills_ratio', ascending=False).query('cosine_dist_title > 0')

@@ -5,7 +5,6 @@ import parsers.pdf as pdf_parser
 import parsers.hh as hh_parser
 
 from models.recs import get_recommended_courses
-
 from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
@@ -25,13 +24,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+def get_response(title, description, keywords=None):
+    df = get_recommended_courses(title, description)
+    return df.to_dict(orient='records')
+
+
 @app.post('/upload_file')
 async def upload_file(request: Request):
     form = await request.form()
     file = form['file']
     try:
         text = pdf_parser.parse_pdf(file)
-        return {"text": text}
+        return get_response('', text)
     except Exception as e:
         return {"error": str(e)}
 
@@ -43,13 +48,7 @@ async def process_data(request: Request):
 
     if text and hh_parser.is_hh_link(text):
         title, description, keywords = hh_parser.parse_hh_vacancy(text)
-        df = get_recommended_courses(title, description)
-        print('df\n\n\n')
-        print(df)
-
-        return {
-            "recs": df.to_dict(orient='records'),
-        }
+        return get_response(title, description, keywords)
 
     return {"text": text}
 

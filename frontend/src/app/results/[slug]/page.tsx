@@ -1,17 +1,26 @@
+'use client'
 import {ResultsTable} from "@/containers/ResultsTable/ResultsTable";
 import {dataProcessApiService} from "@/services/api/data_process/data_process.api.service";
-import {notFound} from "next/navigation";
+import {useEffect, useState} from "react";
+import {DataProcessResponse} from "@/services/api/data_process/data_process.api.types";
+import {LoadingOverlay} from "@/components/LoadingOverlay/LoadingOverlay";
 
-export default async function ResultsPage({params}: { params: { slug: string } }) {
-  const result = await dataProcessApiService.getById(params.slug)
+export default function ResultsPage({params}: { params: { slug: string } }) {
+  const [result, setResult] = useState<DataProcessResponse>()
 
-  if (!result) {
-    return notFound()
-  }
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await dataProcessApiService.getById(params.slug)
+      setResult(result)
+    }
+
+    void fetchData()
+  }, [params.slug])
 
   return (
     <div className="w-full">
-      <ResultsTable data={result.courses}/>
+      {result && <ResultsTable data={result.courses}/>}
+      {!result && <LoadingOverlay/>}
     </div>
   )
 }
